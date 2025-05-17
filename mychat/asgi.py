@@ -3,7 +3,7 @@ import os
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mychat.settings")
-django.setup()  # Force Django to set up the apps
+django.setup()  # Примусове налаштування Django
 
 from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack

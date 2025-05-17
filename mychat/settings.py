@@ -1,12 +1,20 @@
 # mychat/settings.py
 from pathlib import Path
-
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'your-secret-key'  # Replace with a secure key for production.
 DEBUG = True
 ALLOWED_HOSTS = []
-
+CELERY_TASK_QUEUES = {
+    'email': {'exchange': 'email', 'routing_key': 'email'},
+    'long': {'exchange': 'long', 'routing_key': 'long'},
+}
+CELERY_TASK_ROUTES = {
+    'chat.tasks.send_group_email': {'queue': 'email'},
+    'chat.tasks.long_task':        {'queue': 'long'},
+}
 INSTALLED_APPS = [
     # Default Django apps.
     'django.contrib.admin',
@@ -72,5 +80,13 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
+CELERY_BROKER_URL = 'redis://172.18.17.214/0'
+CELERY_RESULT_BACKEND = 'redis://172.18.17.214/1'
 STATIC_URL = '/static/'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'leo'
+EMAIL_HOST_PASSWORD = '11111111'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'no-reply@example.com'
